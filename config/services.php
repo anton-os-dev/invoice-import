@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'accounting' => [
+        'company'  => env('ACCOUNTING_COMPANY'),
+        'login'    => env('ACCOUNTING_LOGIN'),
+        'password' => env('ACCOUNTING_PASSWORD'),
+    ]
+
 ];

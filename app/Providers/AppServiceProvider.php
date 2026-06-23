@@ -16,9 +16,13 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Integrations\AccountingApi::class,
-            \App\Integrations\FakeAccountingApi::class,
-        );
+            \App\Integrations\AccountingApi::class, function () {
+            return new \App\Integrations\FakeAccountingApi(
+                config('services.accounting.company'),
+                config('services.accounting.login'),
+                config('services.accounting.password'),
+            );
+        });
     }
 
     /**

@@ -8,10 +8,53 @@ use Illuminate\Support\Str;
 
 class FakeAccountingApi implements AccountingApi
 {
+    private const VALID_COMPANY  = 'test-corp';
+    private const VALID_LOGIN    = 'test-user';
+    private const VALID_PASSWORD = 'test-pass';
+
+    private ?string $sessionId = null;
+
     private array $existing = [];
+
+    public function __construct(
+        private string $company,
+        private string $login,
+        private string $password,
+    ) {}
+
+    public function authenticate(): AuthResult
+    {
+        $ok = $this->company === self::VALID_COMPANY
+            && $this->login === self::VALID_LOGIN
+            && $this->password === self::VALID_PASSWORD;
+
+        if (! $ok) {
+            return new AuthResult(success: false, error: 'Invalid company, login or password');
+        }
+
+        $this->sessionId = 'SESS-' . Str::upper(Str::random(12));
+
+        return new AuthResult(success: true, sessionId: $this->sessionId);
+    }
 
     public function createInvoices(Collection $invoices): array
     {
+        if ($this->sessionId === null) {
+            $auth = $this->authenticate();
+
+            if (! $auth->success) {
+                $results = [];
+                foreach ($invoices as $invoice) {
+                    $results[$invoice->id] = new InvoiceResult(
+                        success: false,
+                        error: 'Authentication failed: ' . $auth->error,
+                        rawResponse: ['code' => 'AUTH_FAILED'],
+                    );
+                }
+                return $results;
+            }
+        }
+
         $results = [];
 
         foreach ($invoices as $invoice) {
