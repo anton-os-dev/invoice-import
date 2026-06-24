@@ -56,7 +56,7 @@ class BatchProcessor
             $failed === 0 && $posted > 0 => BatchStatus::Completed,
             $posted === 0 && $failed > 0 => BatchStatus::Failed,
             $failed > 0 && $posted > 0   => BatchStatus::PartiallyCompleted,
-            default                      => BatchStatus::Processing,
+            default                      => BatchStatus::Validated,
         };
 
         $batch->update([

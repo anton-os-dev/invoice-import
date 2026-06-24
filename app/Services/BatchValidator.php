@@ -13,6 +13,10 @@ class BatchValidator
 
     public function validate(ImportBatch $batch): void
     {
+        if (! in_array($batch->status, [BatchStatus::Pending, BatchStatus::Validated], true)) {
+            return;
+        }
+
         $batch->invoices()
             ->where('status', InvoiceStatus::Pending)
             ->chunkById(self::CHUNK_SIZE, function ($invoices) {
