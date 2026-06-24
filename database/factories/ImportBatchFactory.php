@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\BatchStatus;
 use App\Models\ImportBatch;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +20,13 @@ class ImportBatchFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id'           => User::factory(),
+            'original_filename' => 'test.csv',
+            'status'            => BatchStatus::Pending,
+            'total_rows'        => 0,
+            'valid_rows'        => 0,
+            'processed_rows'    => 0,
+            'failed_rows'       => 0,
         ];
     }
 }
