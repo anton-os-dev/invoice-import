@@ -1,0 +1,4 @@
+invoice_number,invoice_date,amount,currency
+INV-001,2026-01-15,500,USD
+INV-002,2026-02-01,0,USD
+,,abc,
