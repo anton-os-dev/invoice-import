@@ -15,6 +15,11 @@
             Uploading…
         </div>
 
+        <a href="{{ route('sample.download') }}"
+           class="mt-4 block text-sm text-indigo-300 underline">
+            Download sample CSV
+        </a>
+
         <button wire:click="import" wire:loading.attr="disabled"
                 class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded disabled:opacity-50">
             Import
